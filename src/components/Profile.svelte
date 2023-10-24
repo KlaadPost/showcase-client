@@ -1,6 +1,6 @@
-<div>
+<div class="container">
     <!-- Profile Section -->
-    <section>
+    <section class="container">
         <!-- svelte-ignore a11y-img-redundant-alt -->
         <img
             src="https://cdn.discordapp.com/attachments/890578750763331674/1161595408326332466/ProfilePicture.jpg"
@@ -15,7 +15,7 @@
 
     <!-- First Section -->
     <section>
-        <h2>Opleidingen</h2>
+        <h3>Opleidingen</h3>
         <h5>Swaglord</h5>
         <p>Swag Academy, Sausland</p>
         <h5>HBO-ICT</h5>
@@ -27,7 +27,7 @@
 
     <!-- Second Section -->
     <section>
-        <h2>Personalia</h2>
+        <h3>Personalia</h3>
         <ul>
             <li><span>📧</span> Email: klaas.post@windesheim.nl</li>
             <li><span>📞</span> Phone: +31 0640940856</li>
