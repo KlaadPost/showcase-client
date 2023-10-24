@@ -16,7 +16,7 @@ function initializeComponents() {
 
 function addUILibrary() {
     const styleNode = document.createElement('link');
-    styleNode.href = "";
+    styleNode.href = "https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css";
     styleNode.rel = "stylesheet"
     document.head.appendChild(styleNode);
 }
