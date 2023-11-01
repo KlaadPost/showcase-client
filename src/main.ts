@@ -1,5 +1,5 @@
-import Profile from './components/Profile.svelte';
-import Contact from './components/Contact.svelte';
+import Profile from "./components/profile/Profile.svelte";
+import Contact from "./components/contact/Contact.svelte";
 
 function initializeComponents() {
     const profileTarget = document.getElementById('profile');

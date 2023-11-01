@@ -1,6 +1,6 @@
 <div class="container">
     <!-- Profile Section -->
-    <section class="container">
+    <section>
         <!-- svelte-ignore a11y-img-redundant-alt -->
         <img
             src="https://cdn.discordapp.com/attachments/890578750763331674/1161595408326332466/ProfilePicture.jpg"
@@ -16,10 +16,14 @@
     <!-- First Section -->
     <section>
         <h3>Opleidingen</h3>
-        <h5>Swaglord</h5>
-        <p>Swag Academy, Sausland</p>
-        <h5>HBO-ICT</h5>
-        <p>Christelijke Hoge School Windesheim, Zwolle</p>
+        <hgroup>
+            <h5>Swaglord</h5>
+            <p>Swag Academy, Sausland</p>
+        </hgroup>
+        <hgroup>
+            <h5>HBO-ICT</h5>
+            <p>Christelijke Hoge School Windesheim, Zwolle</p>
+        </hgroup>
     </section>
 
     <!-- Divider -->
