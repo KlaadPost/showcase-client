@@ -1,4 +1,4 @@
-<div class="container">
+<div>
     <!-- Profile Section -->
     <section>
         <!-- svelte-ignore a11y-img-redundant-alt -->

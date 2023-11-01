@@ -38,7 +38,7 @@
     };
 </script>
 
-<div class="container">
+<div>
     <!-- Profile Picture Section -->
     <section>
         <!-- svelte-ignore a11y-img-redundant-alt -->
