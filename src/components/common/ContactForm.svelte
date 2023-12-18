@@ -5,6 +5,8 @@
     let phone = '';
     let submitting = false;
     let response: null | Response = null;
+    let responseMessages: string[] = [];
+    let responseClass = '';
 
     let fieldInvalid: { [key: string]: boolean | null } = {
         firstName: null,
@@ -17,22 +19,36 @@
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const phoneRegex = /^\d{10}$/;
 
-    const validateField = (fieldName: string, value: string, regex: RegExp = nameRegex, showError: boolean = true ): void => {
+    const validateField = (fieldName: string, value: string, regex: RegExp = nameRegex, showError: boolean = true): void => {
         if (showError) {
             fieldInvalid[fieldName] = !regex.test(value);
-        }
-        else {
+        } else {
             fieldInvalid[fieldName] = regex.test(value) ? false : null;
         }
     };
 
-    // If any of the fields are invalid, from is not valid. 
-    $: formValid = !Object.values(fieldInvalid).some((value) => value === true || value === null);
+    // If any of the fields are invalid, form is not valid.
+    // $: formValid = !Object.values(fieldInvalid).some((value) => value === true || value === null);
+    const formValid = true;
 
     const handleSubmit = async () => {
+        validateField('firstName', firstName)
+        validateField('lastName', lastName)
+        validateField('email', email)
+        validateField('phone', phone)
+
         if (!formValid) {
             return;
         }
+
+        const contactData = {
+            FirstName: firstName,
+            LastName: lastName,
+            Email: email,
+            PhoneNumber: phone
+        };
+
+        const requestBody = JSON.stringify(contactData);
 
         submitting = true;
         try {
@@ -40,13 +56,35 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                }
+                },
+                body: requestBody
             });
+
             if (response.ok) {
+                responseMessages = [];
+                responseMessages.push('Email is verzonden');
+                responseClass = 'success';
+
+                firstName = '';
+                lastName = '';
+                email = ''; 
+                phone = '';
+
+                // Reset validation classes
+                fieldInvalid['firstName'] = null;
+                fieldInvalid['lastName'] = null;
+                fieldInvalid['email'] = null;
+                fieldInvalid['phone'] = null;
+
             } else {
+                const errorResponse: { [key: string]: string[] } = await response.json();
+                responseMessages = Object.values(errorResponse)
+                    .flatMap((errors: string[]) => errors)
+                responseClass = 'warning';
             }
         } catch (error) {
-            submitting = false; 
+            responseMessages.push('Er ging iets fout tijdens het versturen van de mail.');
+            responseClass = 'warning';
         } finally {
             submitting = false;
         }
@@ -65,7 +103,7 @@
         <input type="text" id="firstName" bind:value={firstName} 
             on:blur={() => validateField('firstName', firstName)}
             on:input={() => validateField('firstName', firstName, nameRegex, false)}
-            aria-invalid={fieldInvalid.firstName} required />
+            aria-invalid={fieldInvalid.firstName} />
         
         <label for="lastName">Achternaam
             <em class="secondary">&nbsp;{fieldInvalid.lastName ? "• Voer een geldige achternaam in (min 2 letters)" : ""}</em>
@@ -73,7 +111,7 @@
         <input type="text" id="lastName" bind:value={lastName} 
             on:blur={() => validateField('lastName', lastName)}
             on:input={() => validateField('lastName', lastName, nameRegex, false)}
-            aria-invalid={fieldInvalid.lastName} required />
+            aria-invalid={fieldInvalid.lastName} />
         
         <label for="email">Email
             <em class="secondary">&nbsp;{fieldInvalid.email ? "• Voer een geldige email in (iemand@example.nl)" : ""}</em>
@@ -81,7 +119,7 @@
         <input type="email" id="email" bind:value={email} 
             on:blur={() => validateField('email', email, emailRegex)}
             on:input={() => validateField('email', email, emailRegex, false)}
-            aria-invalid={fieldInvalid.email} required/>
+            aria-invalid={fieldInvalid.email} />
         
         <label for="phone">Telefoon
             <em class="secondary">&nbsp;{fieldInvalid.phone ? "• Voer een geldig telefoonnummer in (10 cijfers)" : ""}</em>
@@ -89,13 +127,17 @@
         <input type="tel" id="phone" bind:value={phone}
             on:blur={() => validateField('phone', phone, phoneRegex)}
             on:input={() => validateField('phone', phone, phoneRegex, false)}
-            aria-invalid={fieldInvalid.phone} required/>
+            aria-invalid={fieldInvalid.phone} />
         
         <button type="submit" aria-busy={submitting} disabled={!formValid}>
             {submitting ? 'Verzenden...' : 'Verzenden'}
         </button>
 
-        <p class={""}></p>
+        <div>
+            {#each responseMessages as message}
+            <p class={responseClass}>{message}</p>
+            {/each}
+        </div>
 
     </form>
 </section>
