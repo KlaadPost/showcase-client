@@ -28,8 +28,7 @@
     };
 
     // If any of the fields are invalid, form is not valid.
-    // $: formValid = !Object.values(fieldInvalid).some((value) => value === true || value === null);
-    const formValid = true;
+    $: formValid = !Object.values(fieldInvalid).some((value) => value === true || value === null);
 
     const handleSubmit = async () => {
         validateField('firstName', firstName)
@@ -40,6 +39,8 @@
         if (!formValid) {
             return;
         }
+
+        responseMessages = [];
 
         const contactData = {
             FirstName: firstName,
@@ -61,10 +62,10 @@
             });
 
             if (response.ok) {
-                responseMessages = [];
                 responseMessages.push('Email is verzonden');
                 responseClass = 'success';
 
+                // Clear fields
                 firstName = '';
                 lastName = '';
                 email = ''; 
@@ -103,7 +104,7 @@
         <input type="text" id="firstName" bind:value={firstName} 
             on:blur={() => validateField('firstName', firstName)}
             on:input={() => validateField('firstName', firstName, nameRegex, false)}
-            aria-invalid={fieldInvalid.firstName} />
+            aria-invalid={fieldInvalid.firstName} required/>
         
         <label for="lastName">Achternaam
             <em class="secondary">&nbsp;{fieldInvalid.lastName ? "• Voer een geldige achternaam in (min 2 letters)" : ""}</em>
@@ -111,7 +112,7 @@
         <input type="text" id="lastName" bind:value={lastName} 
             on:blur={() => validateField('lastName', lastName)}
             on:input={() => validateField('lastName', lastName, nameRegex, false)}
-            aria-invalid={fieldInvalid.lastName} />
+            aria-invalid={fieldInvalid.lastName} required/>
         
         <label for="email">Email
             <em class="secondary">&nbsp;{fieldInvalid.email ? "• Voer een geldige email in (iemand@example.nl)" : ""}</em>
@@ -119,7 +120,7 @@
         <input type="email" id="email" bind:value={email} 
             on:blur={() => validateField('email', email, emailRegex)}
             on:input={() => validateField('email', email, emailRegex, false)}
-            aria-invalid={fieldInvalid.email} />
+            aria-invalid={fieldInvalid.email} required/>
         
         <label for="phone">Telefoon
             <em class="secondary">&nbsp;{fieldInvalid.phone ? "• Voer een geldig telefoonnummer in (10 cijfers)" : ""}</em>
@@ -127,7 +128,7 @@
         <input type="tel" id="phone" bind:value={phone}
             on:blur={() => validateField('phone', phone, phoneRegex)}
             on:input={() => validateField('phone', phone, phoneRegex, false)}
-            aria-invalid={fieldInvalid.phone} />
+            aria-invalid={fieldInvalid.phone} required/>
         
         <button type="submit" aria-busy={submitting} disabled={!formValid}>
             {submitting ? 'Verzenden...' : 'Verzenden'}
