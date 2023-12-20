@@ -15,6 +15,8 @@
         phone: null,
     };
 
+    // Key is exposed to users 
+    const reCaptchaClientKey = "6Lc_9TcpAAAAAIdlMq6r78wsWDrj6cELayKQWvw4"
     const nameRegex = /^.{2,1000}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const phoneRegex = /^\d{10}$/;

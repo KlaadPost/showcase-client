@@ -16,4 +16,13 @@ function initializeComponents() {
     }
 }
 
+function addReCaptcha(){
+    const script = document.createElement('script');
+    script.src = "https://www.google.com/recaptcha/api.js?render=6Lc_9TcpAAAAAIdlMq6r78wsWDrj6cELayKQWvw4";
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+}
+
+addReCaptcha();
 initializeComponents();
