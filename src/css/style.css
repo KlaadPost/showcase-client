@@ -1,0 +1,42 @@
+@import "pico.css";
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 60px;
+}
+
+main {
+    flex-grow: 1;
+}
+
+footer {
+    text-align: center;
+}
+
+hr {
+    margin-bottom: 8px;
+}
+
+.warning {
+    color: var(--form-element-invalid-border-color);
+}
+
+.success {
+    color: var(--form-element-valid-border-color);
+}
+
+.secondary {
+    color: var(--secondary)
+}
+
+img.profile {
+    max-width: 170px; 
+    max-height: 170px; 
+    border-radius: 50%; 
+    margin-bottom: 20px;
+}
