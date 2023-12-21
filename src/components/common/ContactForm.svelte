@@ -76,7 +76,7 @@
             });
 
             if (response.ok) {
-                responseMessages.push('Email is verzonden');
+                responseMessages.push("Contactverzoek is verstuurd");
                 responseClass = 'success';
 
                 // Clear fields
