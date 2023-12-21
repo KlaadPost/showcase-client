@@ -15,6 +15,8 @@
         phone: null,
     };
 
+    // Key is exposed to users 
+    const reCaptchaClientKey = "6Lc_9TcpAAAAAIdlMq6r78wsWDrj6cELayKQWvw4"
     const nameRegex = /^.{2,1000}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const phoneRegex = /^\d{10}$/;
@@ -31,27 +33,39 @@
     $: formValid = !Object.values(fieldInvalid).some((value) => value === true || value === null);
 
     const handleSubmit = async () => {
+        responseMessages = [];
         validateField('firstName', firstName)
         validateField('lastName', lastName)
         validateField('email', email)
         validateField('phone', phone)
 
         if (!formValid) {
+            responseMessages.push('Fout in invoervelden');
+            responseClass = 'warning';
             return;
         }
 
-        responseMessages = [];
+        submitting = true;
+
+        let recaptchaToken: string | null = null;
+        try {
+            recaptchaToken = await grecaptcha.execute(reCaptchaClientKey, { action: 'submit' });
+        } catch (error) {
+            responseMessages.push('Kon geen Captcha token ophalen');
+            responseClass = 'warning';
+            return;
+        }
 
         const contactData = {
             FirstName: firstName,
             LastName: lastName,
             Email: email,
-            PhoneNumber: phone
+            PhoneNumber: phone,
+            RecaptchaToken: recaptchaToken,
         };
 
         const requestBody = JSON.stringify(contactData);
 
-        submitting = true;
         try {
             response = await fetch("https://localhost:44336/Contact", {
                 method: "POST",
@@ -62,7 +76,7 @@
             });
 
             if (response.ok) {
-                responseMessages.push('Email is verzonden');
+                responseMessages.push("Contactverzoek is verstuurd");
                 responseClass = 'success';
 
                 // Clear fields
@@ -86,6 +100,7 @@
         } catch (error) {
             responseMessages.push('Er ging iets fout tijdens het versturen van de mail.');
             responseClass = 'warning';
+            return;
         } finally {
             submitting = false;
         }

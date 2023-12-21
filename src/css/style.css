@@ -18,10 +18,6 @@ footer {
     text-align: center;
 }
 
-hr {
-    margin-bottom: 8px;
-}
-
 .warning {
     color: var(--form-element-invalid-border-color);
 }
