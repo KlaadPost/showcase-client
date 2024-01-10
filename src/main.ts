@@ -2,6 +2,7 @@ import './css/pico.css';
 import './css/style.css';
 import ProfilePage from "./components/pages/ProfilePage.svelte";
 import ContactPage from "./components/pages/ContactPage.svelte";
+import "./modal-behavior"
 
 function initializeComponents() {
     const profileTarget = document.getElementById('profile');
