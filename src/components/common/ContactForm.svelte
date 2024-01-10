@@ -51,7 +51,7 @@
         try {
             recaptchaToken = await grecaptcha.execute(reCaptchaClientKey, { action: 'submit' });
         } catch (error) {
-            responseMessages.push('Kon geen Captcha token ophalen');
+            responseMessages.push('Unable to get a captcha token');
             responseClass = 'warning';
             return;
         }
@@ -76,7 +76,7 @@
             });
 
             if (response.ok) {
-                responseMessages.push("Contactverzoek is verstuurd");
+                responseMessages.push("Request has been sent");
                 responseClass = 'success';
 
                 // Clear fields
@@ -98,7 +98,7 @@
                 responseClass = 'warning';
             }
         } catch (error) {
-            responseMessages.push('Er ging iets fout tijdens het versturen van de mail.');
+            responseMessages.push('Something went wrong while trying to send the email, try again later');
             responseClass = 'warning';
             return;
         } finally {
@@ -108,45 +108,49 @@
 </script>
 
 <section>
-
-    <h3>Maak een contactverzoek</h3>
+    <h3>Create a contact request</h3>
+    <hr>
 
     <form on:submit|preventDefault={handleSubmit}>
 
-        <label for="firstName">Voornaam
-            <em class="secondary">&nbsp;{fieldInvalid.firstName ? "• Voer een geldige voornaam in (min 2 letters)" : ""}</em>
+        <label for="firstName">First Name
+            <span class="secondary">&nbsp;{fieldInvalid.firstName ? "• Enter a valid first name (min 2 letters)" : ""}</span>
         </label>
         <input type="text" id="firstName" bind:value={firstName} 
             on:blur={() => validateField('firstName', firstName)}
             on:input={() => validateField('firstName', firstName, nameRegex, false)}
-            aria-invalid={fieldInvalid.firstName} required/>
+            aria-invalid={fieldInvalid.firstName} required
+            placeholder="name"/>
         
-        <label for="lastName">Achternaam
-            <em class="secondary">&nbsp;{fieldInvalid.lastName ? "• Voer een geldige achternaam in (min 2 letters)" : ""}</em>
+        <label for="lastName">Last Name
+            <span class="secondary">&nbsp;{fieldInvalid.lastName ? "• Enter a valid last name (min 2 letters)" : ""}</span>
         </label>
         <input type="text" id="lastName" bind:value={lastName} 
             on:blur={() => validateField('lastName', lastName)}
             on:input={() => validateField('lastName', lastName, nameRegex, false)}
-            aria-invalid={fieldInvalid.lastName} required/>
+            aria-invalid={fieldInvalid.lastName} required
+            placeholder="surname"/>
         
         <label for="email">Email
-            <em class="secondary">&nbsp;{fieldInvalid.email ? "• Voer een geldige email in (iemand@example.nl)" : ""}</em>
+            <span class="secondary">&nbsp;{fieldInvalid.email ? "• Enter a valid email (name@example.com)" : ""}</span>
         </label>
         <input type="email" id="email" bind:value={email} 
             on:blur={() => validateField('email', email, emailRegex)}
             on:input={() => validateField('email', email, emailRegex, false)}
-            aria-invalid={fieldInvalid.email} required/>
+            aria-invalid={fieldInvalid.email} required
+            placeholder="name@example.com"/>
         
-        <label for="phone">Telefoon
-            <em class="secondary">&nbsp;{fieldInvalid.phone ? "• Voer een geldig telefoonnummer in (10 cijfers)" : ""}</em>
+        <label for="phone">Phone
+            <span class="secondary">&nbsp;{fieldInvalid.phone ? "• Enter a valid phone number (10 digits)" : ""}</span>
         </label>
         <input type="tel" id="phone" bind:value={phone}
             on:blur={() => validateField('phone', phone, phoneRegex)}
             on:input={() => validateField('phone', phone, phoneRegex, false)}
-            aria-invalid={fieldInvalid.phone} required/>
+            aria-invalid={fieldInvalid.phone} required
+            placeholder="0600000001"/>
         
         <button type="submit" aria-busy={submitting} disabled={!formValid}>
-            {submitting ? 'Verzenden...' : 'Verzenden'}
+            {submitting ? 'Submitting...' : 'Submit'}
         </button>
 
         <div>

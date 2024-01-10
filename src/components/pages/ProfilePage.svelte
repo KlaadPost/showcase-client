@@ -6,11 +6,7 @@
 
 <Profile />
 
-<hr />
-
 <Curriculum/>
-
-<hr />
 
 <ContactInfo/>
 

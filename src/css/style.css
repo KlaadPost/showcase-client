@@ -19,11 +19,11 @@ footer {
 }
 
 .warning {
-    color: var(--form-element-invalid-border-color);
+    color: var(--form-element-invalid-border-color) !important;
 }
 
 .success {
-    color: var(--form-element-valid-border-color);
+    color: var(--form-element-valid-border-color) !important;
 }
 
 .secondary {

@@ -1,5 +1,6 @@
 <section>
-    <h3>Opleidingen</h3>
+    <h3>Academic History</h3>
+    <hr>
     <hgroup>
         <h5>Swaglord</h5>
         <p>Swag Academy, Sausland</p>
