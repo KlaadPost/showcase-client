@@ -1,10 +1,11 @@
 <section>
-    <h3>Wanneer ben ik aanwezig?</h3>
+    <h3>When am I available?</h3>
+    <hr>
     <figure class="grid">
-        <p>ma 9-17</p>
-        <p>di 9-17</p>
-        <p>wo 9-17</p>
-        <p>do 9-17</p>
-        <p>vr 9-17</p>
+        <p>mon 9-17</p>
+        <p>tue 9-17</p>
+        <p>wen 9-17</p>
+        <p>thu 9-17</p>
+        <p>fri 9-17</p>
     </figure>
 </section>

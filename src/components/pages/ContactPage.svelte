@@ -6,10 +6,6 @@
 
 <Profile />
 
-<hr />
-
 <Availability/>
-
-<hr />
 
 <ContactForm/>

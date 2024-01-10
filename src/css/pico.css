@@ -701,7 +701,6 @@ table,
 ul {
   margin-top: 0;
   margin-bottom: var(--typography-spacing-vertical);
-  color: var(--color);
   font-style: normal;
   font-weight: var(--font-weight);
   font-size: var(--font-size);
