@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { getAntiForgeryToken, getRecaptchaToken } from "../../utils";
+
     let firstName = '';
     let lastName = '';
     let email = '';
@@ -8,18 +10,16 @@
     let responseMessages: string[] = [];
     let responseClass = '';
 
+    const nameRegex = /^.{2,1000}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const phoneRegex = /^\d{10}$/;
+
     let fieldInvalid: { [key: string]: boolean | null } = {
         firstName: null,
         lastName: null,
         email: null,
         phone: null,
     };
-
-    // Key is exposed to users 
-    const reCaptchaClientKey = "6Lc_9TcpAAAAAIdlMq6r78wsWDrj6cELayKQWvw4"
-    const nameRegex = /^.{2,1000}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const phoneRegex = /^\d{10}$/;
 
     const validateField = (fieldName: string, value: string, regex: RegExp = nameRegex, showError: boolean = true): void => {
         if (showError) {
@@ -34,26 +34,37 @@
 
     const handleSubmit = async () => {
         responseMessages = [];
+        submitting = true;
+        let error = false;
+
         validateField('firstName', firstName)
         validateField('lastName', lastName)
         validateField('email', email)
         validateField('phone', phone)
 
         if (!formValid) {
-            responseMessages.push('Fout in invoervelden');
+            responseMessages.push('Invalid form data');
             responseClass = 'warning';
-            return;
+            error = true;
         }
 
-        submitting = true;
-
-        let recaptchaToken: string | null = null;
-        try {
-            recaptchaToken = await grecaptcha.execute(reCaptchaClientKey, { action: 'submit' });
-        } catch (error) {
-            responseMessages.push('Unable to get a captcha token');
+        const tokenValue = await getAntiForgeryToken();
+        if(!tokenValue){
+            responseMessages.push('Unable to get Anti-Forgery Token');
             responseClass = 'warning';
-            return;
+            error = true;
+        }
+
+        const recaptchaToken = await getRecaptchaToken();
+        if(!recaptchaToken){
+            responseMessages.push('Unable to get Recaptcha Token');
+            responseClass = 'warning';
+            error = true;
+        }
+
+        if(error)
+        {
+            return
         }
 
         const contactData = {
@@ -71,6 +82,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    'RequestVerificationToken': tokenValue,
                 },
                 body: requestBody
             });
