@@ -1,8 +1,11 @@
 <script>
+    import ChatBox from '../common/ChatBox.svelte';
     import ChatInput from '../common/ChatInput.svelte'
-    import Message from '../common/ChatMessage.svelte';
 </script>
 
-<Message/>
+<article>
+    <ChatBox/>
+    <ChatInput/>
+</article>
 
-<ChatInput/>
+

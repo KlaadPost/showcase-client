@@ -20,25 +20,6 @@ export const getAntiForgeryToken = async (): Promise<string> => {
     }
 };
 
-
 export const getRecaptchaToken = async () => {
     return await grecaptcha.execute("6Lc_9TcpAAAAAIdlMq6r78wsWDrj6cELayKQWvw4", { action: 'submit' });
-};
-
-/**
- * Handles an HTTP request.
- *
- * @param {string} url - The URL for the request.
- * @param {string} method - The HTTP method (e.g., "GET", "POST").
- * @param {string} body - The request body.
- * @param {Record<string, string>} headers - The request headers.
- * @returns {Promise<Response>} - A promise that resolves with the HTTP response.
- */
-export const handleRequest = async (url: string, method: string, body: string, headers: Record<string, string>) => {
-    const response = await fetch(url, { method, headers, body });
-    if (!response.ok) {
-        const errorResponse: { [key: string]: string[] } = await response.json();
-        throw new Error(Object.values(errorResponse).flatMap((errors: string[]) => errors).join(', '));
-    }
-    return response;
 };
