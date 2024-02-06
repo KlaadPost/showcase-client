@@ -4,11 +4,7 @@
     export let chatMessage: ChatMessage;
 </script>
 
-{#if chatMessage}
-    <hgroup>
-        <h6>{chatMessage.senderName}&nbsp;<Timestamp date={new Date(chatMessage.created)}/></h6>
-        <p>{chatMessage.message}</p>
-    </hgroup>
-{:else}
-    <p>Loading...</p>
-{/if}
+<hgroup>
+    <h6>{chatMessage.senderName}&nbsp;<Timestamp date={new Date(chatMessage.created)}/></h6>
+    <p>{chatMessage.message}</p>
+</hgroup>

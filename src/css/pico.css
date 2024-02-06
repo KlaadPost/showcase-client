@@ -805,7 +805,6 @@ hgroup > *,
 }
 hgroup > *:last-child,
 .headings > *:last-child {
-  --color: var(--muted-color);
   --font-weight: unset;
   font-size: 1rem;
   font-family: unset;
