@@ -12,7 +12,7 @@
     let connection: signalR.HubConnection;
 
     let pageIndex = 0;
-    const pageSize = 20;
+    const pageSize = 10;
     let initialLoad = true;
     let isUserScrolling = false;
     let endReached = false;
@@ -56,7 +56,6 @@
                 }
 
                 chatMessages = [...newMessages, ...chatMessages];
-                console.log(newMessages)
             } 
             else 
             {
@@ -89,6 +88,10 @@
                 {
                     setTimeout(scrollToBottom, 0);
                 }
+            });
+
+            connection.on('MessageDeleted', deletedMessageId => {
+                chatMessages = chatMessages.filter(msg => msg.id !== deletedMessageId);
             });
 
             await connection.start();
@@ -125,6 +128,13 @@
         };
     });
 </script>
+
+<style>
+    .chatbox {
+        max-height: 60svh;
+        overflow-y: auto;
+    }
+</style>
 
 <div class="chatbox" bind:this={chatbox}>
     {#if isLoadingMessages}

@@ -1,3 +1,12 @@
+<style>
+    img.profile {
+        max-width: 170px;
+        max-height: 170px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+</style>
+
 <section style="display: flex; flex-direction: column; align-items: center">
     <!-- svelte-ignore a11y-img-redundant-alt -->
     <img

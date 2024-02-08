@@ -2,6 +2,7 @@
   import { getAntiForgeryToken } from "../../utils";
 
   let message = "";
+  $: isInvalid = message.length > 1200 || null
 
   const handleSubmit = async () => {
     const antiForgeryToken = await getAntiForgeryToken();
@@ -24,10 +25,13 @@
   };
 
   const handleKeyDown = async (event: KeyboardEvent) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      // Prevent the default behavior (form submission) on Enter press
+    if (event.key === "Enter" && !event.shiftKey) 
+    {
       event.preventDefault();
-      await handleSubmit();
+      if(!isInvalid)
+      {
+        await handleSubmit();
+      }
     }
   };
 </script>
@@ -40,6 +44,8 @@
       class="message-input"
       placeholder="Write a message..."
       on:keydown={handleKeyDown}
+      aria-invalid={isInvalid}
     />
+    <progress max="1200" value={message.length}/>
   </form>
 </footer>
