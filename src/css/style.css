@@ -17,11 +17,10 @@ body {
 body {
     display: flex;
     flex-direction: column;
-    margin-bottom: 60px;
 }
 
 main {
-    flex-grow: 1;
+    flex-grow: 0.965;
 }
 
 footer {
@@ -29,16 +28,22 @@ footer {
 }
 
 .warning {
-    --color: var(--del-color) !important;
-    color: var(--color);
+    --color: var(--pico-del-color) !important;
+    color: var(--pico-color);
 }
 
 .success {
-    --color: var(--ins-color) !important;
-    color: var(--color);
+    --color: var(--pico-ins-color) !important;
+    color: var(--pico-color);
 }
 
 .secondary {
-    --color: var(--secondary) !important;
-    color: var(--color);
+    --color: var(--pico-secondary) !important;
+    color: var(--pico-color);
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

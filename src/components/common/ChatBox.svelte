@@ -59,12 +59,12 @@
             } 
             else 
             {
-                console.error(`Failed to fetch more chat messages. Status: ${response.status}`);
+                // console.error(`Failed to fetch more chat messages. Status: ${response.status}`);
             }
         } 
         catch (error) 
         {
-            console.error("Error fetching more chat messages:", error);
+            // console.error("Error fetching more chat messages:", error);
         }
         finally
         {
@@ -108,12 +108,12 @@
             } 
             else 
             {
-                console.error(`Failed to fetch chat messages. Status: ${response.status}`);
+                // console.error(`Failed to fetch chat messages. Status: ${response.status}`);
             }
         } 
         catch (error) 
         {
-            console.error("Error initializing SignalR:", error);
+            // console.error("Error initializing SignalR:", error);
         }
         finally
         {
@@ -131,7 +131,8 @@
 
 <style>
     .chatbox {
-        max-height: 60svh;
+        max-height: 58svh;
+        min-height: 58svh;
         overflow-y: auto;
     }
 </style>

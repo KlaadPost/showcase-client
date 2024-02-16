@@ -5,10 +5,13 @@
     export let chatMessage: ChatMessage;
 
     let deleteButtonDisabled = false;
+    let isDeleting = false;
 
     const handleDelete = async () => {
         try 
         {
+            isDeleting = true;
+
             const antiForgeryToken = await getAntiForgeryToken();
             // Process or send the message here
             const requestBody = JSON.stringify({ Id: chatMessage.id });
@@ -23,7 +26,12 @@
         } 
         catch (error) 
         {
-            console.error("Error deleting chat message:", error);
+            // console.error("Error deleting chat message:", error);
+        }
+        finally
+        {
+            // In case message wasn't deleted
+            isDeleting = false;
         }
     }
 </script>
@@ -31,25 +39,39 @@
 <style>
     .chatmessage {
         position: relative;
+        transition: opacity var(--pico-transition);
+    }
+
+    .chatmessage:hover{
+        opacity: 0.8;
     }
 
     button.delete {
         width: 1rem;
         height: 1rem;
-        background-image: var(--icon-close);
+        transition: opacity var(--pico-transition);
+        position: absolute;
+        top: -0.75rem;
+        right: 1rem;
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button.delete::before {
+        flex-shrink: 0;
+    }
+
+    button.delete:not([aria-busy="true"]) {
+        background-image: var(--pico-icon-close);
         background-position: center;
         background-size: auto 1rem;
         background-repeat: no-repeat;
-        transition: opacity var(--transition);
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin-right: 1rem;
-        opacity: 0;
     }
 
     hgroup.chatmessage:hover button.delete:not([disabled]) {
-        opacity: 1; 
+        opacity: 0.8; 
     }
 </style>
 
@@ -57,7 +79,9 @@
     <button 
         class="delete secondary outline" 
         disabled={deleteButtonDisabled}
-        on:click={handleDelete}/>
+        on:click={handleDelete}
+        title="Delete Message"
+        aria-busy={isDeleting}/>
     <h6>
         {chatMessage.senderName}
         <Timestamp date={new Date(chatMessage.created)}/>

@@ -11,11 +11,12 @@
         position: relative;
         display: block;
         max-height: 25px; /* To account for the text not taking up the whole height */
-        background: var(--color); /* Gets color assigned by theme */
+        background: var(--pico-color); /* Gets color assigned by theme */
         animation: loading 1.5s infinite;
-        border-radius: 4px;
+        border-radius: 6px;
         margin-bottom: 4px;
         overflow: hidden;
+        opacity: 0.5;
     }
 
     .skeleton::before {
