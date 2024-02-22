@@ -16,7 +16,7 @@
         border-radius: 6px;
         margin-bottom: 4px;
         overflow: hidden;
-        opacity: 0.5;
+        opacity: 0.4;
     }
 
     .skeleton::before {

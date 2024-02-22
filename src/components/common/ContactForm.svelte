@@ -31,6 +31,7 @@
 
     // If any of the fields are invalid, form is not valid.
     $: formValid = !Object.values(fieldInvalid).some((value) => value === true || value === null);
+    formValid = true;
 
     const handleSubmit = async () => {
         responseMessages = [];
@@ -125,41 +126,37 @@
 
     <form on:submit|preventDefault={handleSubmit}>
 
-        <label for="firstName">First Name
-            <span class="secondary">&nbsp;{fieldInvalid.firstName ? "• Enter a valid first name (min 2 letters)" : ""}</span>
-        </label>
+        <label for="firstName">First Name</label>
         <input type="text" id="firstName" bind:value={firstName} 
             on:blur={() => validateField('firstName', firstName)}
             on:input={() => validateField('firstName', firstName, nameRegex, false)}
             aria-invalid={fieldInvalid.firstName} required
             placeholder="name"/>
+        <small>{fieldInvalid.firstName ? "Enter a valid first name (min 2 letters)" : ""}</small>
         
-        <label for="lastName">Last Name
-            <span class="secondary">&nbsp;{fieldInvalid.lastName ? "• Enter a valid last name (min 2 letters)" : ""}</span>
-        </label>
+        <label for="lastName">Last Name</label>
         <input type="text" id="lastName" bind:value={lastName} 
             on:blur={() => validateField('lastName', lastName)}
             on:input={() => validateField('lastName', lastName, nameRegex, false)}
             aria-invalid={fieldInvalid.lastName} required
             placeholder="surname"/>
+        <small>{fieldInvalid.lastName ? "Enter a valid last name (min 2 letters)" : ""}</small>
         
-        <label for="email">Email
-            <span class="secondary">&nbsp;{fieldInvalid.email ? "• Enter a valid email (name@example.com)" : ""}</span>
-        </label>
+        <label for="email">Email</label>
         <input type="email" id="email" bind:value={email} 
             on:blur={() => validateField('email', email, emailRegex)}
             on:input={() => validateField('email', email, emailRegex, false)}
             aria-invalid={fieldInvalid.email} required
             placeholder="name@example.com"/>
-        
-        <label for="phone">Phone
-            <span class="secondary">&nbsp;{fieldInvalid.phone ? "• Enter a valid phone number (10 digits)" : ""}</span>
-        </label>
+        <small>{fieldInvalid.email ? "Enter a valid email (name@example.com)" : ""}</small>
+
+        <label for="phone">Phone</label>
         <input type="tel" id="phone" bind:value={phone}
             on:blur={() => validateField('phone', phone, phoneRegex)}
             on:input={() => validateField('phone', phone, phoneRegex, false)}
             aria-invalid={fieldInvalid.phone} required
             placeholder="0600000001"/>
+        <small>{fieldInvalid.phone ? "Enter a valid phone number (10 digits)" : ""}</small>
         
         <button type="submit" aria-busy={submitting} disabled={!formValid}>
             {submitting ? 'Submitting...' : 'Submit'}

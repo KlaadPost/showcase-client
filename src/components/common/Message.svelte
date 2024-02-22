@@ -82,9 +82,9 @@
         on:click={handleDelete}
         title="Delete Message"
         aria-busy={isDeleting}/>
-    <h6>
+    <strong>
         {chatMessage.senderName}
         <Timestamp date={new Date(chatMessage.created)}/>
-    </h6>
+    </strong>
     <p>{chatMessage.message}</p>
 </hgroup>

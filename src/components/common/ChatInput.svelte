@@ -5,24 +5,31 @@
   const cooldownPeriod: number = 500;
   
   let message = "";
+  let isSubmitting = false;
   $: isInvalid = message.length > 1200 || null
 
   const handleSubmit = async () => {
-    const antiForgeryToken = await getAntiForgeryToken();
-    const requestBody = JSON.stringify({ Message: message });
-    
-    await fetch("https://localhost:44336/Chat", 
+    isSubmitting = true;
+    try 
     {
-      method: "POST",
-      headers: 
+      const antiForgeryToken = await getAntiForgeryToken();
+      const requestBody = JSON.stringify({ Message: message });
+      await fetch("https://localhost:44336/Chat", 
       {
-        "Content-Type": "application/json",
-        'RequestVerificationToken': antiForgeryToken,
-      },
-      body: requestBody
-    });
-
-    message = "";
+        method: "POST",
+        headers: 
+        {
+          "Content-Type": "application/json",
+          'RequestVerificationToken': antiForgeryToken,
+        },
+        body: requestBody
+      });
+    }
+    finally
+    {
+      isSubmitting = false;
+      message = "";
+    }
   };
 
   const handleKeyDown = async (event: KeyboardEvent) => {
@@ -66,6 +73,10 @@
       on:keydown={handleKeyDown}
       aria-invalid={isInvalid}
     />
-    <progress max="1000" value={message.length}/>
+    {#if isSubmitting}
+      <progress />
+    {:else}
+      <progress max="1200" value={message.length} />
+    {/if}
   </form>
 </footer>

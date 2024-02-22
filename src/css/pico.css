@@ -818,11 +818,6 @@ hgroup > * {
   margin-top: 0;
   margin-bottom: 0;
 }
-hgroup > *:not(:first-child):last-child {
-  --pico-color: var(--pico-muted-color);
-  --pico-font-weight: unset;
-  font-size: 1rem;
-}
 
 :where(ol, ul) li {
   margin-bottom: calc(var(--pico-typography-spacing-vertical) * 0.25);
