@@ -43,7 +43,7 @@
 
         try 
         {
-            const response = await fetch(`https://localhost:44336/Chat/Messages?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+            const response = await fetch(`https://localhost:44336/api/messages?pageIndex=${pageIndex}&pageSize=${pageSize}`);
             
             if (response.ok) 
             {
@@ -96,7 +96,7 @@
 
             await connection.start();
 
-            const response = await fetch("https://localhost:44336/Chat/Messages");
+            const response = await fetch("https://localhost:44336/api/messages");
             if (response.ok) 
             {
                 chatMessages = await response.json();
