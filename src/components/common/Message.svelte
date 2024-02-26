@@ -15,7 +15,7 @@
             const antiForgeryToken = await getAntiForgeryToken();
             // Process or send the message here
             const requestBody = JSON.stringify({ Id: chatMessage.id });
-            await fetch("https://localhost:44336/Chat", {
+            await fetch("https://localhost:44336/api/messages", {
                 method: "DELETE",
                 headers: {
                 "Content-Type": "application/json",

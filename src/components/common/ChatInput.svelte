@@ -14,7 +14,7 @@
     {
       const antiForgeryToken = await getAntiForgeryToken();
       const requestBody = JSON.stringify({ Message: message });
-      await fetch("https://localhost:44336/Chat", 
+      await fetch("https://localhost:44336/api/messages", 
       {
         method: "POST",
         headers: 
