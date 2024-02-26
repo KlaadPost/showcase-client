@@ -14,7 +14,7 @@ document.addEventListener('keydown', function (event) {
 
 document.addEventListener('click', function (event) {
     const modal = document.getElementById('modal') as HTMLDialogElement | null;
-    if (modal && event.target instanceof HTMLAnchorElement && event.target.getAttribute('aria-label') === 'Close' && event.target.parentElement === modal) {
+    if (modal && event.target instanceof HTMLAnchorElement && event.target.getAttribute('aria-label') === 'Close') {
         modal.close();
     }
 });

@@ -1,4 +1,15 @@
-<section style="display: flex; flex-direction: column; align-items: center">
+<style>    
+    img.profile {
+        max-width: 170px;
+        min-width: 170px;
+        max-height: 170px;
+        min-width: 170px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+</style>
+
+<section class="center">
     <!-- svelte-ignore a11y-img-redundant-alt -->
     <img
         src="https://cdn.discordapp.com/attachments/890578750763331674/1161595408326332466/ProfilePicture.jpg"

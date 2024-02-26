@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { getAntiForgeryToken, getRecaptchaToken } from "../../utils";
+
     let firstName = '';
     let lastName = '';
     let email = '';
@@ -8,18 +10,16 @@
     let responseMessages: string[] = [];
     let responseClass = '';
 
+    const nameRegex = /^.{2,1000}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const phoneRegex = /^\d{10}$/;
+
     let fieldInvalid: { [key: string]: boolean | null } = {
         firstName: null,
         lastName: null,
         email: null,
         phone: null,
     };
-
-    // Key is exposed to users 
-    const reCaptchaClientKey = "6Lc_9TcpAAAAAIdlMq6r78wsWDrj6cELayKQWvw4"
-    const nameRegex = /^.{2,1000}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const phoneRegex = /^\d{10}$/;
 
     const validateField = (fieldName: string, value: string, regex: RegExp = nameRegex, showError: boolean = true): void => {
         if (showError) {
@@ -31,29 +31,41 @@
 
     // If any of the fields are invalid, form is not valid.
     $: formValid = !Object.values(fieldInvalid).some((value) => value === true || value === null);
+    formValid = true;
 
     const handleSubmit = async () => {
         responseMessages = [];
+        submitting = true;
+        let error = false;
+
         validateField('firstName', firstName)
         validateField('lastName', lastName)
         validateField('email', email)
         validateField('phone', phone)
 
         if (!formValid) {
-            responseMessages.push('Fout in invoervelden');
+            responseMessages.push('Invalid form data');
             responseClass = 'warning';
-            return;
+            error = true;
         }
 
-        submitting = true;
-
-        let recaptchaToken: string | null = null;
-        try {
-            recaptchaToken = await grecaptcha.execute(reCaptchaClientKey, { action: 'submit' });
-        } catch (error) {
-            responseMessages.push('Unable to get a captcha token');
+        const tokenValue = await getAntiForgeryToken();
+        if(!tokenValue){
+            responseMessages.push('Unable to get Anti-Forgery Token');
             responseClass = 'warning';
-            return;
+            error = true;
+        }
+
+        const recaptchaToken = await getRecaptchaToken();
+        if(!recaptchaToken){
+            responseMessages.push('Unable to get Recaptcha Token');
+            responseClass = 'warning';
+            error = true;
+        }
+
+        if(error)
+        {
+            return
         }
 
         const contactData = {
@@ -71,6 +83,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    'RequestVerificationToken': tokenValue,
                 },
                 body: requestBody
             });
@@ -113,41 +126,37 @@
 
     <form on:submit|preventDefault={handleSubmit}>
 
-        <label for="firstName">First Name
-            <span class="secondary">&nbsp;{fieldInvalid.firstName ? "• Enter a valid first name (min 2 letters)" : ""}</span>
-        </label>
+        <label for="firstName">First Name</label>
         <input type="text" id="firstName" bind:value={firstName} 
             on:blur={() => validateField('firstName', firstName)}
             on:input={() => validateField('firstName', firstName, nameRegex, false)}
             aria-invalid={fieldInvalid.firstName} required
             placeholder="name"/>
+        <small>{fieldInvalid.firstName ? "Enter a valid first name (min 2 letters)" : ""}</small>
         
-        <label for="lastName">Last Name
-            <span class="secondary">&nbsp;{fieldInvalid.lastName ? "• Enter a valid last name (min 2 letters)" : ""}</span>
-        </label>
+        <label for="lastName">Last Name</label>
         <input type="text" id="lastName" bind:value={lastName} 
             on:blur={() => validateField('lastName', lastName)}
             on:input={() => validateField('lastName', lastName, nameRegex, false)}
             aria-invalid={fieldInvalid.lastName} required
             placeholder="surname"/>
+        <small>{fieldInvalid.lastName ? "Enter a valid last name (min 2 letters)" : ""}</small>
         
-        <label for="email">Email
-            <span class="secondary">&nbsp;{fieldInvalid.email ? "• Enter a valid email (name@example.com)" : ""}</span>
-        </label>
+        <label for="email">Email</label>
         <input type="email" id="email" bind:value={email} 
             on:blur={() => validateField('email', email, emailRegex)}
             on:input={() => validateField('email', email, emailRegex, false)}
             aria-invalid={fieldInvalid.email} required
             placeholder="name@example.com"/>
-        
-        <label for="phone">Phone
-            <span class="secondary">&nbsp;{fieldInvalid.phone ? "• Enter a valid phone number (10 digits)" : ""}</span>
-        </label>
+        <small>{fieldInvalid.email ? "Enter a valid email (name@example.com)" : ""}</small>
+
+        <label for="phone">Phone</label>
         <input type="tel" id="phone" bind:value={phone}
             on:blur={() => validateField('phone', phone, phoneRegex)}
             on:input={() => validateField('phone', phone, phoneRegex, false)}
             aria-invalid={fieldInvalid.phone} required
             placeholder="0600000001"/>
+        <small>{fieldInvalid.phone ? "Enter a valid phone number (10 digits)" : ""}</small>
         
         <button type="submit" aria-busy={submitting} disabled={!formValid}>
             {submitting ? 'Submitting...' : 'Submit'}

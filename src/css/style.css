@@ -1,17 +1,26 @@
+/* 
+This file is used for setting Global Styles.
+Component specific classes are scoped to their respective components.
+*/
+
 @import "pico.css";
 
-html, body {
+html,
+body {
     height: 100%;
+}
+
+* {
+    min-width: 0px;
 }
 
 body {
     display: flex;
     flex-direction: column;
-    margin-bottom: 60px;
 }
 
 main {
-    flex-grow: 1;
+    flex-grow: 0.965;
 }
 
 footer {
@@ -19,20 +28,26 @@ footer {
 }
 
 .warning {
-    color: var(--form-element-invalid-border-color) !important;
+    --color: var(--pico-del-color) !important;
+    color: var(--pico-color);
 }
 
 .success {
-    color: var(--form-element-valid-border-color) !important;
+    --color: var(--pico-ins-color) !important;
+    color: var(--pico-color);
 }
 
 .secondary {
-    color: var(--secondary)
+    --color: var(--pico-secondary) !important;
+    color: var(--pico-color);
 }
 
-img.profile {
-    max-width: 170px; 
-    max-height: 170px; 
-    border-radius: 50%; 
-    margin-bottom: 20px;
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wide {
+    width: 100%;
 }

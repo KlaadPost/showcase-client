@@ -3,10 +3,12 @@ import './css/style.css';
 import ProfilePage from "./components/pages/ProfilePage.svelte";
 import ContactPage from "./components/pages/ContactPage.svelte";
 import "./modal-behavior"
+import ChatPage from './components/pages/ChatPage.svelte';
 
 function initializeComponents() {
     const profileTarget = document.getElementById('profile');
     const contactTarget = document.getElementById('contact');
+    const chatTarget = document.getElementById('chat');
 
     if (profileTarget) {
         new ProfilePage({ target: profileTarget });
@@ -14,6 +16,10 @@ function initializeComponents() {
 
     if (contactTarget) {
         new ContactPage({ target: contactTarget });
+    }
+
+    if(chatTarget) {
+        new ChatPage({ target: chatTarget});
     }
 }
 
