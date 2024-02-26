@@ -1,9 +1,11 @@
 <script lang="ts">
     import Message from "./Message.svelte";
     import MessageSkeleton from "./MessageSkeleton.svelte";
-    import type { ChatMessage } from "../../types";
+    import type { ChatMessage, User } from "../../types";
     import { onMount, afterUpdate } from "svelte";
     import * as signalR from "@microsoft/signalr";
+
+    export let currentUser: User;
     
     let chatbox: HTMLElement;
     let chatMessages: ChatMessage[] = [];
@@ -144,7 +146,7 @@
         {/each}
     {:else}
         {#each chatMessages as chatMessage (chatMessage.id)}
-            <Message chatMessage={chatMessage} />
+            <Message chatMessage={chatMessage} currentUser={currentUser} />
         {/each}
     {/if}
 </div>
