@@ -5,7 +5,7 @@
     import { onMount, afterUpdate } from "svelte";
     import * as signalR from "@microsoft/signalr";
 
-    export let currentUser: User;
+    export let currentUser: User | null;
     
     let chatbox: HTMLElement;
     let chatMessages: ChatMessage[] = [];
@@ -140,7 +140,7 @@
 </style>
 
 <div class="chatbox" bind:this={chatbox}>
-    {#if isLoadingMessages}
+    {#if isLoadingMessages || currentUser == null}
         {#each Array(pageSize) as _}
             <MessageSkeleton />
         {/each}

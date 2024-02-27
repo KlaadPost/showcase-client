@@ -28,18 +28,18 @@ footer {
 }
 
 .warning {
-    --color: var(--pico-del-color) !important;
-    color: var(--pico-color);
+    --pico-color: var(--pico-del-color) !important;
+    color: var(--pico-color) !important;
 }
 
 .success {
-    --color: var(--pico-ins-color) !important;
-    color: var(--pico-color);
+    --pico-color: var(--pico-ins-color) !important;
+    color: var(--pico-color) !important;
 }
 
 .secondary {
-    --color: var(--pico-secondary) !important;
-    color: var(--pico-color);
+    --pico-color: var(--pico-secondary) !important;
+    color: var(--pico-color) !important;
 }
 
 .center {

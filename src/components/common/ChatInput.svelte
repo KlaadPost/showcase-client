@@ -2,7 +2,7 @@
     import type { User } from "../../types";
   import { getAntiForgeryToken } from "../../utils";
 
-  export let currentUser: User;
+  export let currentUser: User | null;
 
   let lastSubmissionTime: number = 0;
   const cooldownPeriod: number = 500;
@@ -72,10 +72,10 @@
       type="text"
       bind:value={message}
       class="message-input"
-      placeholder={currentUser.muted ? "You have been muted" : "Write a message..."}
+      placeholder={currentUser?.muted ? "You have been muted" : "Write a message..."}
       on:keydown={handleKeyDown}
       aria-invalid={isInvalid}
-      disabled={currentUser.muted}
+      disabled={currentUser?.muted || currentUser == null}
     />
     {#if isSubmitting}
       <progress />
