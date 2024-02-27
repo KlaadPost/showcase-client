@@ -1,9 +1,12 @@
 <script lang="ts">
-    import type { ChatMessage } from "../../types";
+    import type { ChatMessage, User } from "../../types";
     import { getAntiForgeryToken } from "../../utils";
     import Timestamp from "./Timestamp.svelte";
-    export let chatMessage: ChatMessage;
 
+    export let chatMessage: ChatMessage;
+    export let currentUser: User;
+
+    let canDelete: boolean = (currentUser.role >= 1) || currentUser.id === chatMessage.senderId 
     let deleteButtonDisabled = false;
     let isDeleting = false;
 
@@ -76,14 +79,20 @@
 </style>
 
 <hgroup class="chatmessage">
-    <button 
+    {#if canDelete}
+        <button 
         class="delete secondary outline" 
         disabled={deleteButtonDisabled}
         on:click={handleDelete}
         title="Delete Message"
         aria-busy={isDeleting}/>
+    {/if}
     <strong>
-        {chatMessage.senderName}
+        {#if currentUser.role == 2}
+            <a href={"https://localhost:44336/Admin/Edit/" + chatMessage.senderId}>{chatMessage.senderName}</a>
+        {:else}
+            <p>{chatMessage.senderName}</p>
+        {/if}
         <Timestamp date={new Date(chatMessage.created)}/>
     </strong>
     <p>{chatMessage.message}</p>

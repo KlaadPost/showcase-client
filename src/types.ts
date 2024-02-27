@@ -6,3 +6,12 @@ export type ChatMessage = {
     senderId: string;
     message: string;
   };
+
+export type User = {
+  id:	string;
+  userName: string;
+  role:	number;
+  emailConfirmed:	boolean;
+  muted: boolean
+  chatMessages?: ChatMessage[];
+}
