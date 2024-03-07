@@ -3,21 +3,26 @@
     import { getAntiForgeryToken } from "../../utils";
     import Timestamp from "./Timestamp.svelte";
 
-    export let chatMessage: ChatMessage;
+    export let chatMessageGroup: ChatMessage[]
+    const firstMessage: ChatMessage = chatMessageGroup[0]
+
     export let currentUser: User;
 
-    let canDelete: boolean = (currentUser.role >= 1) || currentUser.id === chatMessage.senderId 
     let deleteButtonDisabled = false;
     let isDeleting = false;
 
-    const handleDelete = async () => {
+    const canDelete = (senderId: string) => {
+        return (currentUser.role >= 1) || currentUser.id === senderId 
+    }
+
+    const handleDelete = async (message: ChatMessage) => {
         try 
         {
             isDeleting = true;
 
             const antiForgeryToken = await getAntiForgeryToken();
             // Process or send the message here
-            const requestBody = JSON.stringify({ Id: chatMessage.id });
+            const requestBody = JSON.stringify({ Id: message.id });
             await fetch("https://localhost:44336/api/messages", {
                 method: "DELETE",
                 headers: {
@@ -45,7 +50,7 @@
         transition: opacity var(--pico-transition);
     }
 
-    .chatmessage:hover{
+    .chatmessage:hover {
         opacity: 0.8;
     }
 
@@ -73,27 +78,33 @@
         background-repeat: no-repeat;
     }
 
-    hgroup.chatmessage:hover button.delete:not([disabled]) {
+    .chatmessage:hover button.delete:not([disabled]) {
         opacity: 0.8; 
     }
 </style>
 
-<hgroup class="chatmessage">
-    {#if canDelete}
-        <button 
-        class="delete secondary outline" 
-        disabled={deleteButtonDisabled}
-        on:click={handleDelete}
-        title="Delete Message"
-        aria-busy={isDeleting}/>
-    {/if}
+<hgroup>
     <strong>
         {#if currentUser.role == 2}
-            <a href={"https://localhost:44336/Admin/Edit/" + chatMessage.senderId}>{chatMessage.senderName}</a>
+            <a href={"https://localhost:44336/Admin/Edit/" + firstMessage.senderId}>{firstMessage.senderName}</a>
         {:else}
-            <p>{chatMessage.senderName}</p>
+            {firstMessage.senderName}
         {/if}
-        <Timestamp date={new Date(chatMessage.created)}/>
+        <Timestamp date={new Date(firstMessage.created)}/>
     </strong>
-    <p>{chatMessage.message}</p>
+    <hgroup>
+        {#each chatMessageGroup as chatMessage (chatMessage.id)}
+            <p class="chatmessage">
+                {chatMessage.message}
+                {#if canDelete(chatMessage.senderId)}
+                    <button 
+                    class="delete secondary outline" 
+                    disabled={deleteButtonDisabled}
+                    on:click={() => handleDelete(chatMessage)}
+                    title="Delete Message"
+                    aria-busy={isDeleting}/>
+                {/if}
+            </p>
+        {/each}
+    </hgroup>
 </hgroup>

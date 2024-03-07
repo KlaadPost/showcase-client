@@ -8,13 +8,14 @@
     export let currentUser: User | null;
     
     let chatbox: HTMLElement;
-    let chatMessages: ChatMessage[] = [];
+    let chatMessages: ChatMessage[][] = [];
     let isLoadingMessages = true;
 
     let connection: signalR.HubConnection;
 
     let pageIndex = 0;
     const pageSize = 10;
+    const timeFrame = 5;
     let initialLoad = true;
     let isUserScrolling = false;
     let endReached = false;
@@ -45,7 +46,7 @@
 
         try 
         {
-            const response = await fetch(`https://localhost:44336/api/messages?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+            const response = await fetch(`https://localhost:44336/api/messages?pageIndex=${pageIndex}&pageSize=${pageSize}&timeFrame=${timeFrame}`);
             
             if (response.ok) 
             {
@@ -84,16 +85,41 @@
                 .withUrl("https://localhost:44336/chatHub")
                 .build();
 
-            connection.on("ReceiveMessage", chatMessage => {
-                chatMessages = [...chatMessages, chatMessage];
-                if (!isUserScrolling) 
-                {
+            connection.on("ReceiveMessage", (chatMessage) => {
+                console.log("Chatmessage recieved: " + chatMessage.message)
+                const lastGroup = chatMessages[chatMessages.length - 1]; 
+                const lastMessage = lastGroup && lastGroup.length > 0 ? lastGroup[lastGroup.length - 1] : null;
+
+                if (lastMessage !== null && (new Date(chatMessage.created).getMinutes() - new Date(lastMessage.created).getMinutes()) <= timeFrame && lastMessage.senderId === chatMessage.senderId) {
+                    // Add message to last group
+                    chatMessages = [...chatMessages.slice(0, -1), [...lastGroup, chatMessage]];
+                } else {
+                    // Create a new group with the message
+                    chatMessages = [...chatMessages, [chatMessage]];
+                }
+
+                if (!isUserScrolling) {
                     setTimeout(scrollToBottom, 0);
                 }
             });
 
-            connection.on('MessageDeleted', deletedMessageId => {
-                chatMessages = chatMessages.filter(msg => msg.id !== deletedMessageId);
+            connection.on('MessageDeleted', (deletedMessageId) => {
+                // Find the group and delete the message
+                const updatedChatMessages = chatMessages.map((group) => {
+                    const messageIndex = group.findIndex((msg) => msg.id === deletedMessageId);
+
+                    if (messageIndex !== -1) {
+                        // Remove the message from the group
+                        const updatedGroup = [...group.slice(0, messageIndex), ...group.slice(messageIndex + 1)];
+
+                        // If the group is now empty, return an empty array to remove the group
+                        return updatedGroup.length === 0 ? [] : updatedGroup;
+                    }
+
+                    return group;
+                });
+
+                chatMessages = updatedChatMessages.filter((group) => group.length > 0);
             });
 
             await connection.start();
@@ -145,8 +171,8 @@
             <MessageSkeleton />
         {/each}
     {:else}
-        {#each chatMessages as chatMessage (chatMessage.id)}
-            <Message chatMessage={chatMessage} currentUser={currentUser} />
+        {#each chatMessages as chatMessageGroup}
+            <Message chatMessageGroup={chatMessageGroup} currentUser={currentUser} />
         {/each}
     {/if}
 </div>
