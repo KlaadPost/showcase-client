@@ -46,7 +46,7 @@
 
         try 
         {
-            const response = await fetch(`https://localhost:44336/api/messages?pageIndex=${pageIndex}&pageSize=${pageSize}&timeFrame=${timeFrame}`);
+            const response = await fetch(`/api/messages?pageIndex=${pageIndex}&pageSize=${pageSize}&timeFrame=${timeFrame}`);
             
             if (response.ok) 
             {
@@ -82,7 +82,7 @@
 
             // Create SignalR connection
             connection = new signalR.HubConnectionBuilder()
-                .withUrl("https://localhost:44336/chatHub")
+                .withUrl("/chatHub")
                 .build();
 
             connection.on("ReceiveMessage", (chatMessage) => {
@@ -124,7 +124,7 @@
 
             await connection.start();
 
-            const response = await fetch("https://localhost:44336/api/messages");
+            const response = await fetch("/api/messages");
             if (response.ok) 
             {
                 chatMessages = await response.json();

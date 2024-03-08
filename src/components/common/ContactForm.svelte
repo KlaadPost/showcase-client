@@ -79,7 +79,7 @@
         const requestBody = JSON.stringify(contactData);
 
         try {
-            response = await fetch("https://localhost:44336/Contact", {
+            response = await fetch("/Contact", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

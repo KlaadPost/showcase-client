@@ -23,7 +23,7 @@
             const antiForgeryToken = await getAntiForgeryToken();
             // Process or send the message here
             const requestBody = JSON.stringify({ Id: message.id });
-            await fetch("https://localhost:44336/api/messages", {
+            await fetch("/api/messages", {
                 method: "DELETE",
                 headers: {
                 "Content-Type": "application/json",
@@ -86,7 +86,7 @@
 <hgroup>
     <strong>
         {#if currentUser.role == 2}
-            <a href={"https://localhost:44336/Admin/Edit/" + firstMessage.senderId}>{firstMessage.senderName}</a>
+            <a href={"/Admin/Edit/" + firstMessage.senderId}>{firstMessage.senderName}</a>
         {:else}
             {firstMessage.senderName}
         {/if}
