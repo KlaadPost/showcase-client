@@ -88,13 +88,16 @@
             connection.on("ReceiveMessage", (chatMessage) => {
                 console.log("Chatmessage recieved: " + chatMessage.message)
                 const lastGroup = chatMessages[chatMessages.length - 1]; 
-                const lastMessage = lastGroup && lastGroup.length > 0 ? lastGroup[lastGroup.length - 1] : null;
+                const firstMessage = lastGroup && lastGroup.length > 0 ? lastGroup[0] : null;
 
-                if (lastMessage !== null && (new Date(chatMessage.created).getMinutes() - new Date(lastMessage.created).getMinutes()) <= timeFrame && lastMessage.senderId === chatMessage.senderId) {
-                    // Add message to last group
+                if (firstMessage !== null && (new Date(chatMessage.created).getMinutes() - new Date(firstMessage.created).getMinutes()) <= timeFrame && firstMessage.senderId === chatMessage.senderId) {
+                    // console.log(`
+                    // ${new Date(chatMessage.created).getMinutes()} - ${new Date(firstMessage.created).getMinutes()} = ${new Date(chatMessage.created).getMinutes() - new Date(firstMessage.created).getMinutes()}\n
+                    // ${firstMessage.senderName}, ${chatMessage.senderName}`)
+                    
                     chatMessages = [...chatMessages.slice(0, -1), [...lastGroup, chatMessage]];
                 } else {
-                    // Create a new group with the message
+                    // console.log("Message not within timeframe, adding to new group")
                     chatMessages = [...chatMessages, [chatMessage]];
                 }
 
