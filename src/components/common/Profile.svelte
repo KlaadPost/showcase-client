@@ -1,9 +1,11 @@
+<script lang=ts>
+    const profilePicFileName = "../../../pfp.jpeg"; // dist -> shwocase -> lib -> wwwroot
+</script>
+
 <style>    
     img.profile {
-        max-width: 170px;
-        min-width: 170px;
-        max-height: 170px;
-        min-width: 170px;
+        width: 170px;
+        object-fit: cover;
         border-radius: 50%;
         margin-bottom: 20px;
     }
@@ -12,7 +14,7 @@
 <section class="center">
     <!-- svelte-ignore a11y-img-redundant-alt -->
     <img
-        src="https://cdn.discordapp.com/attachments/890578750763331674/1161595408326332466/ProfilePicture.jpg"
+        src={profilePicFileName}
         alt="Profile Picture"
         class="profile"
     />
