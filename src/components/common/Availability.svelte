@@ -1,11 +1,13 @@
 <section>
     <h3>When am I available?</h3>
     <hr>
-    <figure class="grid">
-        <p>mon 9-17</p>
-        <p>tue 9-17</p>
-        <p>wen 9-17</p>
-        <p>thu 9-17</p>
-        <p>fri 9-17</p>
-    </figure>
+    <nav class="center" aria-label="breadcrumb" style="--pico-nav-breadcrumb-divider: '•';">
+        <ul>
+            <li><bold>mon 9-17</bold></li>
+            <li><bold>tue 9-17</bold></li>
+            <li><bold>wen 9-17</bold></li>
+            <li><bold>thu 9-17</bold></li>
+            <li><bold>fri 9-17</bold></li>
+        </ul>
+    </nav>
 </section>
