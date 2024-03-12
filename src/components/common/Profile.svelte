@@ -4,6 +4,7 @@
 
 <style>    
     img.profile {
+        height: 170px;
         width: 170px;
         object-fit: cover;
         border-radius: 50%;
